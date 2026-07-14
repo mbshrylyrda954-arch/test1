@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>علیرضا مبشری | طراح سایت و متخصص هوش مصنوعی</title>
+<meta name="description" content="علیرضا مبشری، طراح سایت و متخصص هوش مصنوعی. نمونه‌کارهای فروشگاه، گیم و پرتال خبری با هویت بصری مستقل.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 4 L42 14 V34 L24 44 L6 34 V14 Z' fill='%23FF9E2C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Lalezar&family=Baloo+2:wght@500;700;800&family=Orbitron:wght@500;700;900&family=Noto+Serif:wght@500;700;900&family=Markazi+Text:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D0805; --panel:#181009; --orange:#FF7A18; --orange2:#FF9E2C; --gold:#FFC93C; --gold2:#FFE066;
+    --ink:#FBF3E8; --muted:#B79E85; --border:rgba(255,180,80,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Vazirmatn',sans-serif; background:var(--bg); color:var(--ink); overflow-x:hidden;}
+  h1,h2,.logo-text{font-family:'Lalezar',sans-serif; letter-spacing:1px;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--gold2); outline-offset:3px;}
+  svg{display:block;}
+  img{max-width:100%; display:block;}
+  .page-view{display:none;}
+  .page-view.active{display:block;}
+
+  #loader{position:fixed; inset:0; background:var(--bg); z-index:9999; display:flex; align-items:center; justify-content:center; transition:opacity .4s, visibility .4s;}
+  .loader-ring{width:56px; height:56px; border-radius:50%; border:3px solid rgba(255,180,80,0.15); border-top-color:var(--orange); animation:spin .9s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #loader.hide{opacity:0; visibility:hidden;}
+
+  #bgCanvas{position:fixed; inset:0; z-index:-1; background:radial-gradient(circle at 30% 20%, rgba(255,122,24,0.08), transparent 45%), radial-gradient(circle at 80% 80%, rgba(255,201,60,0.06), transparent 45%), var(--bg);}
+
+  header{position:sticky; top:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:18px 6%; background:rgba(13,8,5,0.75); backdrop-filter:blur(14px); border-bottom:1px solid var(--border);}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-mark{width:42px; height:42px;}
+  .brand-mark svg{width:100%; height:100%;}
+  .logo-text{font-size:1.3rem; background:linear-gradient(90deg,var(--orange),var(--gold),var(--gold2),var(--orange)); background-size:300% auto; -webkit-background-clip:text; background-clip:text; color:transparent; animation:hue 6s linear infinite;}
+  @keyframes hue{to{background-position:250% center;}}
+  nav{display:flex; align-items:center; gap:26px;}
+  nav a{text-decoration:none; color:var(--muted); font-size:.92rem; font-weight:500; transition:.25s; cursor:pointer;}
+  nav a:hover{color:var(--gold2);}
+  .menu-btn{display:none; background:none; border:1px solid var(--border); border-radius:10px; width:42px; height:42px; align-items:center; justify-content:center; color:var(--ink); cursor:pointer;}
+  .menu-btn svg{width:20px; height:20px;}
+  .mobile-nav{display:none; flex-direction:column; gap:4px; position:fixed; top:78px; right:4%; left:4%; background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:10px; z-index:210; box-shadow:0 20px 50px rgba(0,0,0,.5);}
+  .mobile-nav.open{display:flex;}
+  .mobile-nav a{padding:12px 14px; border-radius:10px; text-decoration:none; color:var(--ink); font-weight:600; font-size:.95rem; cursor:pointer;}
+  .mobile-nav a:hover{background:rgba(255,180,80,.08);}
+
+  .hero{min-height:78vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:60px 6%; position:relative;}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; background:rgba(255,201,60,.08); color:var(--gold2); padding:7px 18px; border-radius:30px; font-size:.82rem; font-weight:700; border:1px solid rgba(255,201,60,.25); margin-bottom:24px; opacity:0; animation:rise .8s .1s forwards;}
+  .dot{width:6px; height:6px; border-radius:50%; background:var(--gold2); box-shadow:0 0 8px var(--gold2); animation:pulse 1.5s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+  .hero h1{font-size:clamp(2.2rem,5.5vw,4.2rem); line-height:1.3; opacity:0; animation:rise .8s .25s forwards;}
+  .hero h1 .grad{background:linear-gradient(90deg,var(--orange),var(--gold),var(--gold2)); background-size:250% auto; -webkit-background-clip:text; background-clip:text; color:transparent; animation:hue 5s linear infinite;}
+  .hero p{max-width:560px; margin:20px auto 0; color:var(--muted); font-size:1.05rem; line-height:1.9; opacity:0; animation:rise .8s .4s forwards;}
+  .cta-row{display:flex; gap:14px; margin-top:32px; justify-content:center; flex-wrap:wrap; opacity:0; animation:rise .8s .55s forwards;}
+  .quick-links{display:flex; gap:12px; margin-top:22px; justify-content:center; flex-wrap:wrap; opacity:0; animation:rise .8s .68s forwards;}
+  .quick-link{display:flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; background:var(--panel); border:1px solid var(--border); color:var(--muted); font-size:.85rem; font-weight:600; transition:.25s; cursor:pointer;}
+  .quick-link:hover{color:var(--gold2); border-color:rgba(255,201,60,.4); transform:translateY(-2px);}
+  .quick-link svg{width:15px; height:15px;}
+  .btn{padding:14px 30px; border-radius:13px; font-weight:700; font-size:.95rem; cursor:pointer; border:none; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:.3s;}
+  .btn-primary{background:linear-gradient(135deg,var(--orange),var(--gold)); color:#1a0e00; box-shadow:0 10px 30px rgba(255,122,24,.35);}
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 14px 40px rgba(255,122,24,.5);}
+  .btn-ghost{background:var(--panel); border:1px solid var(--border); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--gold);}
+  @keyframes rise{to{opacity:1; transform:translateY(0);} from{transform:translateY(20px);}}
+
+  section{padding:70px 6%;}
+  .section-title{text-align:center; margin-bottom:40px;}
+  .section-title h2{font-size:clamp(1.6rem,3vw,2.2rem);}
+  .section-title p{color:var(--muted); margin-top:10px; font-size:.95rem;}
+  .reveal{opacity:0; transform:translateY(30px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.show{opacity:1; transform:translateY(0);}
+  .grid3{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px;}
+  .proj-card{position:relative; border-radius:22px; overflow:hidden; border:1px solid var(--border); background:var(--panel); padding:34px 26px; cursor:pointer; transition:transform .4s, border-color .4s, box-shadow .4s; text-decoration:none; color:var(--ink); display:block;}
+  .proj-card:hover{transform:translateY(-8px); border-color:rgba(255,180,80,.4); box-shadow:0 20px 50px rgba(0,0,0,.5);}
+  .proj-card .pi{width:56px; height:56px; border-radius:15px; margin-bottom:18px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,122,24,.18), rgba(255,201,60,.18));}
+  .proj-card .pi svg{width:28px; height:28px;}
+  .proj-card h3{font-size:1.15rem; font-weight:800; margin-bottom:8px;}
+  .proj-card p{font-size:.87rem; color:var(--muted); line-height:1.7; margin-bottom:16px;}
+  .proj-card .tag{display:inline-block; font-size:.72rem; font-weight:700; color:var(--gold2); background:rgba(255,201,60,.1); padding:4px 12px; border-radius:20px; border:1px solid rgba(255,201,60,.25);}
+  .proj-card .go{position:absolute; bottom:24px; left:26px; color:var(--orange2); font-size:1.2rem; transition:.3s;}
+  .proj-card:hover .go{transform:translateX(-6px);}
+  .about-wrap{display:grid; grid-template-columns:220px 1fr; gap:36px; align-items:center; background:var(--panel); border:1px solid var(--border); border-radius:24px; padding:36px;}
+  .about-avatar{width:100%; aspect-ratio:1; border-radius:20px; background:linear-gradient(135deg, rgba(255,122,24,.25), rgba(255,201,60,.15)); display:flex; align-items:center; justify-content:center; border:1px solid var(--border);}
+  .about-avatar svg{width:70px; height:70px;}
+  .about-text h3{font-size:1.3rem; margin-bottom:10px; font-family:'Lalezar',sans-serif;}
+  .about-text p{color:var(--muted); font-size:.92rem; line-height:1.9;}
+  .skills{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;}
+  .skills span{font-size:.78rem; font-weight:600; padding:6px 14px; border-radius:20px; background:rgba(255,122,24,.1); color:var(--gold2); border:1px solid rgba(255,122,24,.25);}
+  .contact-box{background:linear-gradient(135deg,#1f1006,#160c04); border:1px solid var(--border); border-radius:26px; padding:50px 6%; text-align:center;}
+  .contact-box h2{font-size:clamp(1.5rem,3vw,2.1rem); margin-bottom:14px;}
+  .contact-box p{color:var(--muted); margin-bottom:28px;}
+  .tg-btn{display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg,#29A9EA,#229ED9); color:#fff; padding:14px 30px; border-radius:14px; text-decoration:none; font-weight:700; box-shadow:0 10px 30px rgba(41,169,234,.35); transition:.3s;}
+  .tg-btn:hover{transform:translateY(-3px); box-shadow:0 14px 40px rgba(41,169,234,.5);}
+  .tg-btn svg{width:20px; height:20px;}
+  .channel-note{margin-top:16px; font-size:.82rem; color:var(--muted);}
+  footer{text-align:center; padding:40px 6%; color:var(--muted); font-size:.82rem; border-top:1px solid var(--border); margin-top:20px;}
+
+  /* ===================== back bar shared by demo views ===================== */
+  .back-bar{position:sticky; top:0; z-index:150; display:flex; align-items:center; justify-content:space-between; padding:14px 6%;}
+  .back-btn{display:inline-flex; align-items:center; gap:8px; font-size:.85rem; font-weight:700; text-decoration:none; cursor:pointer; padding:9px 16px; border-radius:10px; transition:.25s;}
+
+  /* ===================== SHOP THEME — "VELURE" dark luxury marketplace ===================== */
+  .view-shop{font-family:'Vazirmatn',sans-serif; background:#0B0B0D; color:#EDEAE3; position:relative;}
+  .shop-mesh{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .shop-mesh span{position:absolute; border-radius:50%; filter:blur(70px); opacity:.28; animation:meshDrift 16s ease-in-out infinite;}
+  .shop-mesh span:nth-child(1){width:38vw; height:38vw; background:#C9A227; top:-8%; left:-6%;}
+  .shop-mesh span:nth-child(2){width:32vw; height:32vw; background:#6B4A9A; bottom:-10%; right:-4%; animation-delay:-6s;}
+  .shop-mesh span:nth-child(3){width:26vw; height:26vw; background:#8A6D3A; top:40%; left:60%; animation-delay:-11s;}
+  @keyframes meshDrift{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(4%,-5%) scale(1.12);}}
+  .view-shop .back-bar{background:rgba(11,11,13,.85); border-bottom:1px solid rgba(201,162,39,.25); backdrop-filter:blur(12px); position:sticky; top:0;}
+  .view-shop .back-btn{background:rgba(201,162,39,.1); color:#C9A227; border:1px solid rgba(201,162,39,.35);}
+  .view-shop .back-btn:hover{background:#C9A227; color:#0B0B0D;}
+  .shop-top{position:relative; z-index:2; background:linear-gradient(180deg,#101012,#0B0B0D); border-bottom:1px solid rgba(201,162,39,.15);}
+  .shop-search{display:flex; align-items:center; gap:16px; padding:20px 6%; flex-wrap:wrap;}
+  .shop-mark{width:38px; height:38px; flex-shrink:0;}
+  .shop-logo{font-size:1.35rem; font-weight:800; color:#EDEAE3; display:flex; align-items:center; gap:10px; letter-spacing:1px;}
+  .shop-logo span{color:#C9A227; font-weight:500;}
+  .shop-searchbar{flex:1; min-width:220px; display:flex; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,.1);}
+  .shop-searchbar input{flex:1; border:none; padding:12px 16px; font-family:inherit; font-size:.9rem; background:#17171a; color:#EDEAE3;}
+  .shop-searchbar input::placeholder{color:#6b6b70;}
+  .shop-searchbar button{background:#C9A227; border:none; padding:0 20px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .shop-searchbar button svg{width:16px; height:16px; color:#0B0B0D;}
+  .shop-catbar{display:flex; gap:26px; padding:12px 6%; background:#0B0B0D; overflow-x:auto;}
+  .shop-catbar a{color:#9a978f; text-decoration:none; font-size:.82rem; font-weight:600; white-space:nowrap; cursor:pointer; transition:.2s;}
+  .shop-catbar a:hover{color:#C9A227;}
+  .shop-banner{position:relative; z-index:2; padding:90px 6% 130px; text-align:center; overflow:hidden;}
+  .shop-banner .eyebrow2{display:inline-block; font-size:.72rem; letter-spacing:3px; color:#C9A227; border:1px solid rgba(201,162,39,.35); padding:7px 18px; border-radius:30px; margin-bottom:22px;}
+  .shop-banner h1{font-weight:800; font-size:clamp(2rem,4.5vw,3.4rem); background:linear-gradient(90deg,#EDEAE3,#C9A227,#EDEAE3); background-size:220% auto; -webkit-background-clip:text; background-clip:text; color:transparent; animation:shopHue 6s linear infinite;}
+  @keyframes shopHue{to{background-position:220% center;}}
+  .shop-banner p{color:#9a978f; margin-top:14px; font-size:1.05rem;}
+  .shop-strip{display:flex; gap:10px; justify-content:center; margin-top:30px; flex-wrap:wrap;}
+  .shop-strip span{border:1px solid rgba(255,255,255,.12); color:#c9c6bd; font-size:.76rem; font-weight:600; padding:7px 16px; border-radius:20px;}
+  .shop-deals{position:relative; z-index:2; max-width:1200px; margin:-70px auto 0; padding:0 6%;}
+  .shop-deal-header{background:#17171a; border:1px solid rgba(255,255,255,.08); border-radius:16px 16px 0 0; padding:20px 24px; font-weight:800; font-size:1.1rem; display:flex; justify-content:space-between; align-items:center;}
+  .shop-deal-header span{color:#C9A227; font-size:.75rem; border:1px solid rgba(201,162,39,.35); padding:4px 12px; border-radius:20px; font-weight:700;}
+  .shop-grid{background:#101012; border:1px solid rgba(255,255,255,.08); border-top:none; border-radius:0 0 16px 16px; display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
+  .shop-card{border:1px solid rgba(255,255,255,.05); padding:22px 18px; display:flex; flex-direction:column; position:relative; transition:.3s; cursor:pointer; background:#101012;}
+  .shop-card:hover{background:#17171a; transform:translateY(-6px); z-index:2; box-shadow:0 20px 40px rgba(0,0,0,.5);}
+  .shop-badge{position:absolute; top:14px; right:14px; background:rgba(201,162,39,.15); color:#C9A227; border:1px solid rgba(201,162,39,.4); font-size:.66rem; font-weight:800; padding:3px 10px; border-radius:20px;}
+  .shop-img{height:120px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; background:radial-gradient(circle,#1c1c20,#101012); border-radius:12px; border:1px solid rgba(255,255,255,.05);}
+  .shop-img svg{width:44px; height:44px; color:#C9A227; opacity:.9;}
+  .shop-card h4{font-size:.9rem; font-weight:700; margin-bottom:8px; line-height:1.6; color:#EDEAE3;}
+  .shop-stars{color:#C9A227; font-size:.8rem; margin-bottom:8px;}
+  .shop-stars span{color:#7a7870; font-size:.74rem;}
+  .shop-price{font-weight:800; font-size:1.1rem; color:#EDEAE3; margin-bottom:6px;}
+  .shop-price small{font-size:.68rem; color:#7a7870; text-decoration:line-through; font-weight:500; margin-right:6px;}
+  .shop-addcart{margin-top:auto; background:transparent; border:1px solid #C9A227; color:#C9A227; border-radius:8px; padding:10px; font-weight:800; font-size:.8rem; cursor:pointer; transition:.2s;}
+  .shop-addcart:hover{background:#C9A227; color:#0B0B0D;}
+  .shop-addcart.added{background:#3E7A5C; border-color:#3E7A5C; color:#fff;}
+  .shop-features{position:relative; z-index:2; max-width:1200px; margin:60px auto; padding:0 6%; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
+  .shop-feature{background:#101012; border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:26px; text-align:center;}
+  .shop-feature svg{width:30px; height:30px; margin:0 auto 10px; color:#C9A227;}
+  .shop-feature h5{font-size:.9rem; font-weight:800; margin-bottom:6px;}
+  .shop-feature p{font-size:.78rem; color:#9a978f;}
+  .shop-footer{position:relative; z-index:2; background:#0B0B0D; border-top:1px solid rgba(255,255,255,.08); color:#7a7870; text-align:center; padding:34px 6%; font-size:.8rem; margin-top:20px;}
+
+  /* ===================== GAME THEME (neon cyber) ===================== */
+  .view-game{font-family:'Vazirmatn',sans-serif; background:#05040A; color:#EAF7FF; position:relative;}
+  .view-game .back-bar{background:rgba(5,4,10,.85); border-bottom:1px solid rgba(0,255,231,.25); backdrop-filter:blur(10px);}
+  .view-game .back-btn{background:rgba(0,255,231,.1); color:#00FFE7; border:1px solid rgba(0,255,231,.4);}
+  .view-game .back-btn:hover{background:#00FFE7; color:#05040A;}
+  .game-mark{width:30px; height:30px;}
+  .game-scanlines{position:fixed; inset:0; z-index:0; pointer-events:none; background:repeating-linear-gradient(180deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 2px, transparent 4px); opacity:.5;}
+  .game-hero{position:relative; min-height:70vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; overflow:hidden; padding:60px 6%;}
+  .game-grid-floor{position:absolute; bottom:0; left:0; right:0; height:55%; background-image:linear-gradient(rgba(255,0,200,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,200,.35) 1px, transparent 1px); background-size:44px 44px; transform:perspective(400px) rotateX(62deg); transform-origin:bottom; mask-image:linear-gradient(to top, black, transparent); animation:floorMove 3s linear infinite;}
+  @keyframes floorMove{from{background-position:0 0;} to{background-position:0 44px;}}
+  .game-glow{position:absolute; width:70vw; height:70vw; max-width:700px; max-height:700px; background:radial-gradient(circle,rgba(157,0,255,.35),transparent 65%); top:-20%; right:-10%; filter:blur(10px); animation:glowPulse 5s ease-in-out infinite;}
+  @keyframes glowPulse{0%,100%{opacity:.6;} 50%{opacity:1;}}
+  .game-eyebrow{display:inline-flex; gap:8px; align-items:center; font-family:'Orbitron',sans-serif; font-size:.72rem; letter-spacing:3px; color:#00FFE7; border:1px solid rgba(0,255,231,.4); padding:8px 18px; border-radius:4px; margin-bottom:26px; background:rgba(0,255,231,.06);}
+  .game-title{font-family:'Orbitron',sans-serif; font-weight:900; font-size:clamp(2.2rem,6vw,4.5rem); position:relative; color:#fff; text-shadow:0 0 18px rgba(0,255,231,.6);}
+  .game-title .glitch{position:relative; display:inline-block; color:#fff;}
+  .game-title .glitch::before, .game-title .glitch::after{content:attr(data-txt); position:absolute; top:0; left:0; width:100%; overflow:hidden; background:#05040A;}
+  .game-title .glitch::before{color:#FF00C8; animation:glitchTop 3.5s infinite linear alternate-reverse; clip-path:inset(0 0 55% 0);}
+  .game-title .glitch::after{color:#00FFE7; animation:glitchBot 3.2s infinite linear alternate-reverse; clip-path:inset(55% 0 0 0);}
+  @keyframes glitchTop{0%,90%,100%{transform:translate(0,0);} 92%{transform:translate(-3px,-1px);} 94%{transform:translate(3px,1px);} 96%{transform:translate(-2px,0);}}
+  @keyframes glitchBot{0%,90%,100%{transform:translate(0,0);} 91%{transform:translate(3px,1px);} 95%{transform:translate(-3px,-1px);} 97%{transform:translate(2px,0);}}
+  .game-hero p{max-width:520px; margin:22px auto 0; color:#93A8B8; line-height:1.9;}
+  .game-cta{margin-top:34px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .game-btn{padding:14px 30px; border-radius:6px; font-weight:800; font-size:.9rem; font-family:'Orbitron',sans-serif; text-decoration:none; cursor:pointer; border:none; letter-spacing:1px; transition:.25s;}
+  .game-btn.primary{background:linear-gradient(90deg,#FF00C8,#9D00FF); color:#fff; box-shadow:0 0 25px rgba(255,0,200,.5);}
+  .game-btn.primary:hover{transform:translateY(-3px); box-shadow:0 0 35px rgba(255,0,200,.8);}
+  .game-btn.ghost{background:transparent; border:1px solid rgba(0,255,231,.4); color:#00FFE7;}
+  .game-btn.ghost:hover{background:rgba(0,255,231,.1);}
+  .game-sec{padding:60px 6%; position:relative; z-index:1;}
+  .game-sec h2{font-family:'Orbitron',sans-serif; text-align:center; font-size:1.6rem; margin-bottom:40px; color:#fff;}
+  .game-sec h2 span{color:#00FFE7;}
+  .game-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:22px; max-width:1200px; margin:0 auto;}
+  .game-card{background:linear-gradient(160deg,#0D0B18,#131022); border:1px solid rgba(0,255,231,.15); border-radius:14px; overflow:hidden; transition:.3s; position:relative;}
+  .game-card:hover{border-color:#00FFE7; box-shadow:0 0 30px rgba(0,255,231,.25); transform:translateY(-6px);}
+  .game-card .art{height:140px; display:flex; align-items:center; justify-content:center; font-size:3.4rem; background:linear-gradient(135deg, rgba(255,0,200,.18), rgba(0,255,231,.12));}
+  .game-card .body{padding:18px;}
+  .game-card h4{font-weight:800; margin-bottom:6px; font-size:1rem;}
+  .game-card p{font-size:.78rem; color:#93A8B8; margin-bottom:10px; line-height:1.6;}
+  .game-tags{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;}
+  .game-tags span{font-size:.65rem; font-weight:700; padding:3px 9px; border-radius:12px; background:rgba(157,0,255,.15); color:#C89BFF; border:1px solid rgba(157,0,255,.3);}
+  .game-price{display:flex; justify-content:space-between; align-items:center;}
+  .game-price b{color:#00FFE7; font-family:'Orbitron',sans-serif;}
+  .game-play{font-size:.72rem; font-weight:800; background:rgba(0,255,231,.12); color:#00FFE7; border:1px solid rgba(0,255,231,.4); padding:6px 12px; border-radius:6px; cursor:pointer;}
+  .game-play:hover{background:#00FFE7; color:#05040A;}
+  .game-stats{display:flex; justify-content:center; gap:50px; flex-wrap:wrap; padding:50px 6%; text-align:center;}
+  .game-stats b{display:block; font-family:'Orbitron',sans-serif; font-size:1.8rem; color:#FF00C8;}
+  .game-stats span{font-size:.78rem; color:#93A8B8;}
+  .game-footer{text-align:center; padding:30px; color:#4d5f6c; font-size:.78rem; border-top:1px solid rgba(0,255,231,.15); position:relative; z-index:1;}
+
+  /* ===================== NEWS THEME — dark editorial "روزنامه امروز" ===================== */
+  .view-news{font-family:'Vazirmatn',sans-serif; background:#0E0D0C; color:#E7E3DC; position:relative;}
+  .news-bg{position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(circle at 15% 10%, rgba(193,18,31,.10), transparent 40%), radial-gradient(circle at 85% 70%, rgba(193,18,31,.07), transparent 45%); animation:newsGlow 10s ease-in-out infinite;}
+  @keyframes newsGlow{0%,100%{opacity:.7;} 50%{opacity:1;}}
+  .view-news .back-bar{background:rgba(14,13,12,.9); border-bottom:1px solid rgba(193,18,31,.3); backdrop-filter:blur(10px); position:sticky; top:0; z-index:150;}
+  .view-news .back-btn{background:#1c1a18; color:#E7E3DC; border:1px solid rgba(255,255,255,.1);}
+  .view-news .back-btn:hover{background:#C1121F; border-color:#C1121F; color:#fff;}
+  .news-ticker-wrap{position:relative; z-index:2; background:#C1121F; color:#fff; display:flex; align-items:center; overflow:hidden;}
+  .news-ticker-label{background:#0E0D0C; padding:9px 18px; font-weight:800; font-size:.8rem; white-space:nowrap; flex-shrink:0;}
+  .news-ticker{display:flex; white-space:nowrap; animation:tickerMove 22s linear infinite;}
+  .news-ticker span{padding:9px 30px; font-size:.83rem; font-weight:600;}
+  @keyframes tickerMove{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+  .news-masthead{position:relative; z-index:2; text-align:center; padding:44px 6% 22px; border-bottom:1px solid rgba(255,255,255,.12);}
+  .news-mark{width:44px; margin:0 auto 12px;}
+  .news-masthead .date{font-size:.75rem; letter-spacing:2px; color:#a19b90; text-transform:uppercase; margin-bottom:10px; font-family:'Markazi Text',serif;}
+  .news-masthead h1{font-family:'Noto Serif',serif; font-weight:900; font-size:clamp(2.4rem,6vw,4.2rem); letter-spacing:1px; color:#F3EFE7;}
+  .news-masthead p{font-family:'Markazi Text',serif; font-size:1.1rem; color:#a19b90; margin-top:8px; font-style:italic;}
+  .news-layout{position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:40px 6%; display:grid; grid-template-columns:2fr 1fr; gap:36px;}
+  .news-lead{border-bottom:1px solid rgba(255,255,255,.1); padding-bottom:30px; margin-bottom:30px;}
+  .news-lead .cat{color:#E4485A; font-weight:800; font-size:.75rem; letter-spacing:1px; margin-bottom:10px; display:block;}
+  .news-lead h2{font-family:'Noto Serif',serif; font-size:clamp(1.5rem,3vw,2.3rem); line-height:1.4; margin-bottom:14px; color:#F3EFE7;}
+  .news-lead .img{height:260px; border-radius:4px; background:linear-gradient(135deg,#1c1a18,#2c2926); border:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; margin-bottom:16px;}
+  .news-lead .img svg{width:70px; height:70px; color:#C1121F; opacity:.8;}
+  .news-lead p.excerpt{font-family:'Markazi Text',serif; font-size:1.15rem; line-height:1.8; color:#c7c2b8;}
+  .news-byline{font-size:.78rem; color:#8a857b; margin-top:12px;}
+  .news-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  .news-item{border-bottom:1px solid rgba(255,255,255,.08); padding-bottom:20px; cursor:pointer; transition:.2s;}
+  .news-item:hover h3{color:#E4485A;}
+  .news-item .img{height:120px; background:linear-gradient(135deg,#1c1a18,#2c2926); border:1px solid rgba(255,255,255,.08); border-radius:4px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;}
+  .news-item .img svg{width:38px; height:38px; color:#C1121F; opacity:.8;}
+  .news-item .cat{color:#E4485A; font-weight:800; font-size:.68rem; letter-spacing:1px;}
+  .news-item h3{font-family:'Noto Serif',serif; font-size:1.05rem; line-height:1.5; margin:6px 0; transition:.2s; color:#F3EFE7;}
+  .news-item p{font-size:.8rem; color:#a19b90; line-height:1.6;}
+  .news-sidebar{border-right:1px solid rgba(255,255,255,.1); padding-right:30px;}
+  .news-sidebar h4{font-family:'Noto Serif',serif; font-weight:800; font-size:1.05rem; border-bottom:2px solid #E7E3DC; padding-bottom:10px; margin-bottom:16px; color:#F3EFE7;}
+  .news-side-item{display:flex; gap:12px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.08); align-items:flex-start;}
+  .news-side-item .n{font-family:'Noto Serif',serif; font-weight:900; font-size:1.6rem; color:#E4485A; flex-shrink:0;}
+  .news-side-item h5{font-size:.85rem; line-height:1.5; font-weight:700; color:#E7E3DC;}
+  .news-side-item span{font-size:.7rem; color:#8a857b;}
+  .news-footer{position:relative; z-index:2; background:#0E0D0C; border-top:1px solid rgba(255,255,255,.1); color:#8a857b; text-align:center; padding:30px; font-size:.8rem; margin-top:20px;}
+
+  /* ===================== signup toast (shown periodically on demo pages) ===================== */
+  #signupToast{position:fixed; bottom:22px; left:22px; z-index:500; max-width:300px; padding:16px 18px; border-radius:14px; display:flex; gap:12px; align-items:flex-start; transform:translateY(140%); opacity:0; transition:transform .5s cubic-bezier(.2,.9,.3,1.3), opacity .4s; box-shadow:0 20px 50px rgba(0,0,0,.5);}
+  #signupToast.show{transform:translateY(0); opacity:1;}
+  #signupToast .t-icon{width:34px; height:34px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center;}
+  #signupToast .t-icon svg{width:18px; height:18px;}
+  #signupToast .t-body h6{font-size:.83rem; font-weight:800; margin-bottom:3px;}
+  #signupToast .t-body p{font-size:.75rem; line-height:1.6; margin-bottom:9px;}
+  #signupToast .t-actions{display:flex; gap:8px;}
+  #signupToast .t-actions button{font-size:.72rem; font-weight:700; padding:6px 12px; border-radius:7px; cursor:pointer; border:none;}
+  #signupToast .t-close{position:absolute; top:8px; left:10px; background:none; border:none; cursor:pointer; font-size:1rem; opacity:.5; line-height:1;}
+  #signupToast .t-close:hover{opacity:1;}
+  #signupToast.theme-shop{background:#17171a; border:1px solid rgba(201,162,39,.3); color:#EDEAE3;}
+  #signupToast.theme-shop .t-icon{background:rgba(201,162,39,.15); color:#C9A227;}
+  #signupToast.theme-shop .t-primary{background:#C9A227; color:#0B0B0D;}
+  #signupToast.theme-shop .t-ghost{background:transparent; border:1px solid rgba(255,255,255,.15); color:#c9c6bd;}
+  #signupToast.theme-game{background:#0D0B18; border:1px solid rgba(0,255,231,.35); color:#EAF7FF; font-family:'Vazirmatn',sans-serif;}
+  #signupToast.theme-game .t-icon{background:rgba(0,255,231,.12); color:#00FFE7;}
+  #signupToast.theme-game .t-primary{background:linear-gradient(90deg,#FF00C8,#9D00FF); color:#fff;}
+  #signupToast.theme-game .t-ghost{background:transparent; border:1px solid rgba(0,255,231,.3); color:#00FFE7;}
+  #signupToast.theme-news{background:#1c1a18; border:1px solid rgba(228,72,90,.35); color:#E7E3DC;}
+  #signupToast.theme-news .t-icon{background:rgba(228,72,90,.15); color:#E4485A;}
+  #signupToast.theme-news .t-primary{background:#E4485A; color:#fff;}
+  #signupToast.theme-news .t-ghost{background:transparent; border:1px solid rgba(255,255,255,.15); color:#c7c2b8;}
+
+  @media(prefers-reduced-motion: reduce){*{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}}
+  @media(max-width:640px){
+    nav{display:none;} .menu-btn{display:flex;}
+    .about-wrap{grid-template-columns:1fr; text-align:center;} .about-avatar{width:120px; margin:0 auto;}
+    .news-layout{grid-template-columns:1fr;} .news-sidebar{border-right:none; border-top:1px solid #ccc; padding-right:0; padding-top:20px;}
+    .news-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div id="loader" aria-hidden="true"><div class="loader-ring"></div></div>
+<div id="bgCanvas"></div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="ic-shop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></symbol>
+    <symbol id="ic-game" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 10v4M5 12h4" stroke-linecap="round"/><circle cx="16" cy="11" r="1"/><circle cx="18.5" cy="13.5" r="1"/></symbol>
+    <symbol id="ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6" stroke-linecap="round"/></symbol>
+    <symbol id="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></symbol>
+    <symbol id="ic-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ic-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></symbol>
+    <symbol id="ic-headphone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 14v-2a8 8 0 0116 0v2" stroke-linecap="round"/><rect x="2.5" y="14" width="5" height="7" rx="2"/><rect x="16.5" y="14" width="5" height="7" rx="2"/></symbol>
+    <symbol id="ic-watch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="6.5"/><path d="M12 9v3l2 1.5M9 3.5h6M9 20.5h6" stroke-linecap="round"/></symbol>
+    <symbol id="ic-sneaker" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 17c0-2 1.5-3 3-3.5l4-4 5 2.5c2 1 4 1 7 1v4H2z" stroke-linejoin="round"/><path d="M2 17h20" stroke-linecap="round"/></symbol>
+    <symbol id="ic-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3" stroke-linecap="round"/></symbol>
+    <symbol id="ic-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h16l-1.4 12.2a2 2 0 01-2 1.8H7.4a2 2 0 01-2-1.8L4 8z" stroke-linejoin="round"/><path d="M8 8V6a4 4 0 018 0v2" stroke-linecap="round"/></symbol>
+    <symbol id="ic-cream" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="9" width="10" height="12" rx="2"/><path d="M9 9V6a3 3 0 016 0v3" stroke-linecap="round"/><path d="M9.5 13h5" stroke-linecap="round"/></symbol>
+    <symbol id="ic-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4.5" width="16" height="10.5" rx="1.5"/><path d="M2.5 19.5h19L20 17H4l-1.5 2.5z" stroke-linejoin="round"/></symbol>
+    <symbol id="ic-glasses" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="14" r="3.5"/><circle cx="17.5" cy="14" r="3.5"/><path d="M10 13.5h4M3 13l1.5-6h3M21 13l-1.5-6h-3" stroke-linecap="round"/></symbol>
+    <symbol id="ic-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 6h11v10H2z"/><path d="M13 10h4l4 3.5V16h-8z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></symbol>
+    <symbol id="ic-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2.5l8 3.2v6c0 5-3.4 8.3-8 9.8-4.6-1.5-8-4.8-8-9.8v-6l8-3.2z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ic-return" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 9a8 8 0 1114 -5.3" stroke-linecap="round"/><path d="M4 3v6h6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ic-support" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M5 5l4 4M19 5l-4 4M5 19l4-4M19 19l-4-4" stroke-linecap="round"/></symbol>
+    <symbol id="ic-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2c3 2 5 6 5 10 0 2-1 4-2 5l-3 2-3-2c-1-1-2-3-2-5 0-4 2-8 5-10z" stroke-linejoin="round"/><circle cx="12" cy="10" r="1.8"/><path d="M9 17l-2 4M15 17l2 4" stroke-linecap="round"/></symbol>
+    <symbol id="ic-wizard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20L12 2l8 18z" stroke-linejoin="round"/><circle cx="15" cy="7" r="1.3"/><path d="M6 20h12" stroke-linecap="round"/></symbol>
+    <symbol id="ic-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke-linecap="round"/></symbol>
+    <symbol id="ic-dragon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 14c3-6 7-9 9-9 1 3-1 4-1 4 3 0 6 2 7 5-2-1-4-1-5 0 2 1 3 3 3 5-2-2-4-2-5-1 1 1 1 3 0 4-1-2-3-3-5-3 1-1 1-3 0-4-1 1-2 1-3 0z" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+    <symbol id="ic-city" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21V9l5-4 5 4v12M13 21V6l4-2 4 2v15M3 21h18" stroke-linejoin="round" stroke-linecap="round"/><path d="M6.5 12h1M6.5 16h1M10.5 12h1M10.5 16h1" stroke-linecap="round"/></symbol>
+    <symbol id="ic-controller" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 10v4M5 12h4" stroke-linecap="round"/><circle cx="16" cy="10.5" r="1"/><circle cx="18.5" cy="13" r="1"/></symbol>
+    <symbol id="ic-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21V3M3 21h18" stroke-linecap="round"/><path d="M7 17l4-6 3 3 5-8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ic-column" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 21V9l8-6 8 6v12" stroke-linejoin="round"/><path d="M4 21h16M8 21v-7M12 21v-7M16 21v-7" stroke-linecap="round"/></symbol>
+    <symbol id="ic-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 4h10v4a5 5 0 01-10 0V4z" stroke-linejoin="round"/><path d="M7 5H4v2a4 4 0 004 4M17 5h3v2a4 4 0 01-4 4" stroke-linecap="round"/><path d="M12 13v4M9 21h6M10 17h4v4h-4z" stroke-linecap="round"/></symbol>
+    <symbol id="ic-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v6l-5.5 9a2 2 0 001.7 3h11.6a2 2 0 001.7-3L14 9V3" stroke-linejoin="round" stroke-linecap="round"/><path d="M7.5 15h9" stroke-linecap="round"/></symbol>
+    <symbol id="ic-film" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="5" width="19" height="14" rx="1.5"/><path d="M2.5 9h19M2.5 15h19M8 5v4M8 15v4M16 5v4M16 15v4" stroke-linecap="round"/></symbol>
+    <symbol id="ic-feather" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 4c-8 0-15 6-16 15 9-1 15-8 15-16z" stroke-linejoin="round"/><path d="M11 15L20 4" stroke-linecap="round"/></symbol>
+    <symbol id="ic-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 9a6 6 0 0112 0c0 5 1.5 6.5 1.5 6.5H4.5S6 14 6 9z" stroke-linejoin="round"/><path d="M10 19a2 2 0 004 0" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ HOME / PORTFOLIO VIEW ============ -->
+<div class="page-view active" id="page-home">
+  <header>
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF7A18"/><stop offset="100%" stop-color="#FFC93C"/></linearGradient></defs>
+          <path d="M24 4 L42 14 V34 L24 44 L6 34 V14 Z" stroke="url(#lg1)" stroke-width="2.4" fill="rgba(255,122,24,0.06)"/>
+          <path d="M24 14 L33 19 V29 L24 34 L15 29 V19 Z" fill="url(#lg1)"/>
+        </svg>
+      </div>
+      <span class="logo-text">علیرضا مبشری</span>
+    </div>
+    <nav aria-label="ناوبری اصلی">
+      <a href="#work">نمونه‌کارها</a>
+      <a href="#about">درباره من</a>
+      <a href="#contact">ارتباط با من</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="باز کردن منو" aria-expanded="false">
+      <svg><use href="#ic-menu"/></svg>
+    </button>
+  </header>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#work">نمونه‌کارها</a>
+    <a href="#about">درباره من</a>
+    <a href="#contact">ارتباط با من</a>
+  </div>
+
+  <section class="hero">
+    <span class="eyebrow"><span class="dot"></span> طراح سایت و متخصص هوش مصنوعی</span>
+    <h1>علیرضا مبشری<br><span class="grad">می‌سازم، طراحی می‌کنم، توسعه می‌دم</span></h1>
+    <p>مجموعه‌ای از نمونه‌کارهای طراحی سایت در حوزه‌های مختلف؛ از فروشگاه گرفته تا گیم و اخبار، هرکدوم با هویت بصری مستقل.</p>
+    <div class="cta-row">
+      <a href="#work" class="btn btn-primary">مشاهده نمونه‌کارها</a>
+      <a href="#contact" class="btn btn-ghost">ارتباط با من</a>
+    </div>
+    <div class="quick-links">
+      <a href="#shop" class="quick-link"><svg><use href="#ic-shop"/></svg> برو به شاپ</a>
+      <a href="#game" class="quick-link"><svg><use href="#ic-game"/></svg> برو به گیم</a>
+      <a href="#news" class="quick-link"><svg><use href="#ic-news"/></svg> برو به اخبار</a>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-title reveal"><h2>نمونه‌کارها</h2><p>هر بخش یک سایت مستقل با تم و افکت مخصوص به خودشه</p></div>
+    <div class="grid3">
+      <a href="#shop" class="proj-card reveal">
+        <div class="pi"><svg style="color:#FFC93C"><use href="#ic-shop"/></svg></div>
+        <span class="tag">فروشگاه</span><h3>شاپ — فروشگاه حرفه‌ای</h3>
+        <p>یک فروشگاه آنلاین سبک آمازون با تم سرمه‌ای/نارنجی، کارت محصول و افکت افزودن به سبد.</p>
+        <span class="go">مشاهده سایت ◀</span>
+      </a>
+      <a href="#game" class="proj-card reveal">
+        <div class="pi"><svg style="color:#FF7A18"><use href="#ic-game"/></svg></div>
+        <span class="tag">گیمینگ</span><h3>گیم — سایت نئون سایبری</h3>
+        <p>تم مشکی با نئون بنفش/سایان، تایتل گلیچ و کف گرید سه‌بعدی متحرک.</p>
+        <span class="go">مشاهده سایت ◀</span>
+      </a>
+      <a href="#news" class="proj-card reveal">
+        <div class="pi"><svg style="color:#FFE066"><use href="#ic-news"/></svg></div>
+        <span class="tag">رسانه</span><h3>اخبار — پرتال خبری</h3>
+        <p>چیدمان روزنامه‌ای با فونت سریف، نوار خبر فوری متحرک و ستون‌بندی مجله‌ای.</p>
+        <span class="go">مشاهده سایت ◀</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-title reveal"><h2>درباره من</h2></div>
+    <div class="about-wrap reveal">
+      <div class="about-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#FFC93C" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></div>
+      <div class="about-text">
+        <h3>علیرضا مبشری</h3>
+        <p>طراح سایت و متخصص هوش مصنوعی؛ کارم ترکیب طراحی بصری خاص با راه‌حل‌های هوشمنده. هر پروژه رو با هویت بصری مستقل می‌سازم، نه یه قالب تکراری.</p>
+        <div class="skills"><span>طراحی رابط کاربری</span><span>توسعه فرانت‌اند</span><span>هوش مصنوعی</span><span>انیمیشن وب</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-box reveal">
+      <h2>ارتباط با ما</h2>
+      <p>سوال یا پیشنهاد همکاری داری؟ از طریق تلگرام در ارتباط باش</p>
+      <a href="https://t.me/br0hick" target="_blank" rel="noopener noreferrer" class="tg-btn">
+        <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M21.5 4.5L2.7 11.9c-1.2.5-1.2 1.2-.2 1.5l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.2-2.1 4.6 3.4c.8.5 1.4.2 1.6-.8l3-14c.3-1.2-.5-1.8-1.8-1.3z"/></svg>
+        کانال تلگرام t.me/br0hick
+      </a>
+      <p class="channel-note">کانال فعلاً خالیه، به‌زودی محتوا اضافه میشه</p>
+    </div>
+  </section>
+  <footer>© تمام حقوق برای علیرضا مبشری محفوظ است</footer>
+</div>
+
+<!-- ============ SHOP VIEW — VELURE ============ -->
+<div class="page-view view-shop" id="page-shop">
+  <div class="shop-mesh"><span></span><span></span><span></span></div>
+  <div class="back-bar"><a href="#home" class="back-btn"><svg style="width:16px;height:16px"><use href="#ic-back"/></svg> بازگشت به نمونه‌کارها</a></div>
+  <div class="shop-top">
+    <div class="shop-search">
+      <div class="shop-logo">
+        <svg class="shop-mark" viewBox="0 0 40 40" fill="none"><path d="M20 3l16 8v18l-16 8-16-8V11z" stroke="#C9A227" stroke-width="1.6"/><path d="M20 3v34M4 11l16 8 16-8" stroke="#C9A227" stroke-width="1.2" opacity=".5"/></svg>
+        ولوره<span>VELURE</span>
+      </div>
+      <div class="shop-searchbar"><input type="text" placeholder="جستجوی محصول، برند یا دسته‌بندی..."><button aria-label="جستجو"><svg><use href="#ic-search"/></svg></button></div>
+    </div>
+    <div class="shop-catbar reveal">
+      <a>الکترونیک</a><a>موبایل و تبلت</a><a>پوشاک</a><a>لوازم خانه</a><a>ورزش و سفر</a><a>زیبایی و سلامت</a><a>کتاب و لوازم تحریر</a>
+    </div>
+  </div>
+
+  <div class="shop-banner">
+    <span class="eyebrow2 reveal">مجموعه منتخب فصل</span>
+    <h1 class="reveal">حس متفاوت خرید، در دنیای ولوره</h1>
+    <p class="reveal">کیفیت برتر، طراحی بی‌نظیر و تجربه‌ای که فقط برای شماست</p>
+    <div class="shop-strip reveal"><span>ارسال رایگان بالای ۵۰۰ هزار تومان</span><span>ضمانت بازگشت ۷ روزه</span><span>پرداخت امن</span></div>
+  </div>
+
+  <div class="shop-deals">
+    <div class="shop-deal-header reveal">پیشنهادهای ویژه <span>محدود</span></div>
+    <div class="shop-grid" id="shopGrid">
+      <div class="shop-card reveal"><span class="shop-badge">۳۵٪-</span><div class="shop-img"><svg><use href="#ic-headphone"/></svg></div><h4>هدفون بی‌سیم نویزکنسل مدل Aura X2</h4><div class="shop-stars">★★★★☆ <span>(۲٬۱۴۰)</span></div><div class="shop-price">۱٬۲۹۰٬۰۰۰ تومان <small>۱٬۹۹۰٬۰۰۰</small></div><button class="shop-addcart">افزودن به سبد</button></div>
+      <div class="shop-card reveal"><span class="shop-badge">پرفروش</span><div class="shop-img"><svg><use href="#ic-watch"/></svg></div><h4>ساعت هوشمند سری Pulse با سنسور ضربان قلب</h4><div class="shop-stars">★★★★★ <span>(۸۹۲)</span></div><div class="shop-price">۲٬۴۵۰٬۰۰۰ تومان</div><button class="shop-addcart">افزودن به سبد</button></div>
+      <div class="shop-card reveal"><span class="shop-badge">۲۰٪-</span><div class="shop-img"><svg><use href="#ic-sneaker"/></svg></div><h4>کفش رانینگ سبک‌وزن اسپرینت ایر</h4><div class="shop-stars">★★★★☆ <span>(۵۶۳)</span></div><div class="shop-price">۹۸۰٬۰۰۰ تومان <small>۱٬۲۲۰٬۰۰۰</small></div><button class="shop-addcart">افزودن به سبد</button></div>
+      <div class="shop-card reveal"><span class="shop-badge">جدید</span><div class="shop-img"><svg><use href="#ic-phone"/></svg></div><h4>گوشی هوشمند نوا ۱۲ پرو، حافظه ۲۵۶ گیگ</h4><div class="shop-stars">★★★★★ <span>(۳٬۰۵۰)</span></div><div class="shop-price">۲۱٬۹۰۰٬۰۰۰ تومان</div><button class="shop-addcart">افزودن به سبد</button></div>
+      <div class="shop-card reveal"><span class="shop-badge">۴۵٪-</span><div class="shop-img"><svg><use href="#ic-bag"/></svg></div><h4>کوله‌پشتی ضدآب مدل ارگو ترکینگ ۳۵ لیتری</h4><div class="shop-stars">★★★★☆ <span>(۴۱۰)</span></div><div class="shop-price">۶۸۰٬۰۰۰ تومان <small>۱٬۲۵۰٬۰۰۰</small></div><button class="shop-addcart">افزودن به سبد</button></div>
+      <div class="shop-card reveal"><span class="shop-badge">پرفروش</span><div class="shop-img"><svg><use href="#ic-cream"/></svg></div><h4>ست مراقبت پوست ویتامین C ارگانیک</h4><div class="shop-stars">★★★★☆ <span>(۱٬۲۲۰)</span></div><div class="shop-price">۴۵۰٬۰۰۰ تومان</div><button class="shop-addcart">افزودن به سبد</button></div>
+      <div class="shop-card reveal"><span class="shop-badge">۱۵٪-</span><div class="shop-img"><svg><use href="#ic-laptop"/></svg></div><h4>لپ‌تاپ اولترابوک ۱۴ اینچ نسل جدید</h4><div class="shop-stars">★★★★★ <span>(۱٬۸۹۰)</span></div><div class="shop-price">۳۱٬۵۰۰٬۰۰۰ تومان <small>۳۷٬۰۰۰٬۰۰۰</small></div><button class="shop-addcart">افزودن به سبد</button></div>
+      <div class="shop-card reveal"><span class="shop-badge">جدید</span><div class="shop-img"><svg><use href="#ic-glasses"/></svg></div><h4>عینک آفتابی پلاریزه ضدخش سری Horizon</h4><div class="shop-stars">★★★★☆ <span>(۲۷۸)</span></div><div class="shop-price">۳۹۰٬۰۰۰ تومان</div><button class="shop-addcart">افزودن به سبد</button></div>
+    </div>
+  </div>
+
+  <div class="shop-features">
+    <div class="shop-feature reveal"><svg><use href="#ic-truck"/></svg><h5>ارسال سریع</h5><p>تحویل ۲۴ تا ۴۸ ساعته در سراسر کشور</p></div>
+    <div class="shop-feature reveal"><svg><use href="#ic-shield"/></svg><h5>پرداخت امن</h5><p>درگاه بانکی معتبر و رمزنگاری‌شده</p></div>
+    <div class="shop-feature reveal"><svg><use href="#ic-return"/></svg><h5>بازگشت آسان</h5><p>۷ روز فرصت بازگشت کالا بدون قید و شرط</p></div>
+    <div class="shop-feature reveal"><svg><use href="#ic-support"/></svg><h5>پشتیبانی ۲۴ساعته</h5><p>پاسخگویی فوری از طریق چت و تلفن</p></div>
+  </div>
+  <div class="shop-footer">© ولوره — یک نمونه‌کار طراحی توسط علیرضا مبشری</div>
+</div>
+
+<!-- ============ GAME VIEW — NETROVYS ============ -->
+<div class="page-view view-game" id="page-game">
+  <div class="game-scanlines"></div>
+  <div class="back-bar">
+    <a href="#home" class="back-btn"><svg style="width:16px;height:16px"><use href="#ic-back"/></svg> بازگشت به نمونه‌کارها</a>
+    <div class="game-mark">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M15 2l12 6v14l-12 6-12-6V8z" stroke="#00FFE7" stroke-width="1.4"/><path d="M15 2v26M3 8l12 6 12-6" stroke="#FF00C8" stroke-width="1" opacity=".6"/></svg>
+    </div>
+  </div>
+  <div class="game-hero">
+    <div class="game-glow"></div>
+    <div class="game-grid-floor"></div>
+    <span class="game-eyebrow">// NEXT-GEN GAMING PORTAL</span>
+    <h1 class="game-title"><span class="glitch" data-txt="نتروویس">نتروویس</span></h1>
+    <p>مقصد گیمرهایی که فقط بهترین‌ها رو می‌خوان؛ جدیدترین بازی‌ها، تورنمنت‌های آنلاین و اجتماع حرفه‌ای گیمینگ.</p>
+    <div class="game-cta">
+      <a class="game-btn primary" href="#">شروع بازی</a>
+      <a class="game-btn ghost" href="#">مشاهده تورنمنت‌ها</a>
+    </div>
+  </div>
+
+  <div class="game-sec">
+    <h2>پرطرفدارترین <span>عناوین هفته</span></h2>
+    <div class="game-grid">
+      <div class="game-card reveal"><div class="art"><svg style="width:44px;height:44px;color:#00FFE7"><use href="#ic-shield"/></svg></div><div class="body"><h4>Shadow Protocol</h4><p>اکشن-تاکتیکال چندنفره با گرافیک سینمایی</p><div class="game-tags"><span>اکشن</span><span>چندنفره</span></div><div class="game-price"><b>۴۹۰٬۰۰۰ ت</b><button class="game-play">پخش دمو</button></div></div></div>
+      <div class="game-card reveal"><div class="art"><svg style="width:44px;height:44px;color:#FF00C8"><use href="#ic-rocket"/></svg></div><div class="body"><h4>Void Racers</h4><p>مسابقه فضایی با فیزیک واقع‌گرایانه و پیست‌های بی‌نهایت</p><div class="game-tags"><span>ریسینگ</span><span>آنلاین</span></div><div class="game-price"><b>۳۵۰٬۰۰۰ ت</b><button class="game-play">پخش دمو</button></div></div></div>
+      <div class="game-card reveal"><div class="art"><svg style="width:44px;height:44px;color:#C89BFF"><use href="#ic-wizard"/></svg></div><div class="body"><h4>Rune Ascend</h4><p>نقش‌آفرینی فانتزی با دنیای باز و داستان شاخه‌ای</p><div class="game-tags"><span>RPG</span><span>تک‌نفره</span></div><div class="game-price"><b>۵۹۰٬۰۰۰ ت</b><button class="game-play">پخش دمو</button></div></div></div>
+      <div class="game-card reveal"><div class="art"><svg style="width:44px;height:44px;color:#00FFE7"><use href="#ic-target"/></svg></div><div class="body"><h4>Neon Strike</h4><p>تیراندازی رقابتی با نقشه‌های تولید-تصادفی و رنکینگ فصلی</p><div class="game-tags"><span>شوتر</span><span>رقابتی</span></div><div class="game-price"><b>رایگان</b><button class="game-play">پخش دمو</button></div></div></div>
+      <div class="game-card reveal"><div class="art"><svg style="width:44px;height:44px;color:#FF00C8"><use href="#ic-dragon"/></svg></div><div class="body"><h4>Dragon's Ember</h4><p>ماجراجویی اکشن با نبردهای اپیک بازتاب‌محور</p><div class="game-tags"><span>اکشن</span><span>فانتزی</span></div><div class="game-price"><b>۴۲۰٬۰۰۰ ت</b><button class="game-play">پخش دمو</button></div></div></div>
+      <div class="game-card reveal"><div class="art"><svg style="width:44px;height:44px;color:#C89BFF"><use href="#ic-city"/></svg></div><div class="body"><h4>Cyber District</h4><p>شبیه‌ساز مدیریت شهر سایبرپانک با اقتصاد پویا</p><div class="game-tags"><span>استراتژی</span><span>شبیه‌سازی</span></div><div class="game-price"><b>۲۹۰٬۰۰۰ ت</b><button class="game-play">پخش دمو</button></div></div></div>
+    </div>
+  </div>
+
+  <div class="game-stats">
+    <div class="reveal"><b>+۲.۴M</b><span>گیمر فعال</span></div>
+    <div class="reveal"><b>+۸۰۰</b><span>عنوان بازی</span></div>
+    <div class="reveal"><b>۲۴/۷</b><span>تورنمنت زنده</span></div>
+    <div class="reveal"><b>۹۹.۹٪</b><span>آپ‌تایم سرور</span></div>
+  </div>
+  <div class="game-footer">© نتروویس — یک نمونه‌کار طراحی توسط علیرضا مبشری</div>
+</div>
+
+<!-- ============ NEWS VIEW — روزنامه امروز ============ -->
+<div class="page-view view-news" id="page-news">
+  <div class="news-bg"></div>
+  <div class="back-bar"><a href="#home" class="back-btn"><svg style="width:16px;height:16px"><use href="#ic-back"/></svg> بازگشت به نمونه‌کارها</a></div>
+  <div class="news-ticker-wrap">
+    <div class="news-ticker-label">خبر فوری</div>
+    <div class="news-ticker">
+      <span>رشد ۱۲ درصدی بازار فناوری در سه‌ماهه اخیر</span>
+      <span>افتتاح خط جدید مترو در پایتخت تا پایان سال</span>
+      <span>قهرمانی تیم ملی در رقابت‌های منطقه‌ای</span>
+      <span>افزایش سرمایه‌گذاری خارجی در صنعت گردشگری</span>
+      <span>رشد ۱۲ درصدی بازار فناوری در سه‌ماهه اخیر</span>
+      <span>افتتاح خط جدید مترو در پایتخت تا پایان سال</span>
+      <span>قهرمانی تیم ملی در رقابت‌های منطقه‌ای</span>
+      <span>افزایش سرمایه‌گذاری خارجی در صنعت گردشگری</span>
+    </div>
+  </div>
+  <div class="news-masthead">
+    <svg class="news-mark" viewBox="0 0 44 44" fill="none"><rect x="3" y="3" width="38" height="38" rx="3" stroke="#E4485A" stroke-width="1.6"/><path d="M11 14h22M11 22h22M11 30h14" stroke="#E7E3DC" stroke-width="1.6" stroke-linecap="round"/></svg>
+    <div class="date">سه‌شنبه، ۲۳ تیر ۱۴۰۵ — نشریه روزانه</div>
+    <h1>روزنامه امروز</h1>
+    <p>روایت دقیق، بی‌طرفانه و به‌موقع از رویدادهای مهم</p>
+  </div>
+
+  <div class="news-layout">
+    <div class="news-main">
+      <div class="news-lead reveal">
+        <span class="cat">تیتر اصلی — اقتصاد</span>
+        <h2>بازار سرمایه در آستانه یک تحول بزرگ: تحلیل کارشناسان از روند صعودی هفته‌های اخیر</h2>
+        <div class="img"><svg><use href="#ic-chart"/></svg></div>
+        <p class="excerpt">به گزارش خبرنگاران ما، فعالان بازار سرمایه معتقدند رشد اخیر شاخص کل می‌تواند نقطه‌عطفی برای جذب سرمایه‌گذاران خرد باشد. کارشناسان توصیه می‌کنند تصمیم‌گیری‌ها بر پایه تحلیل بنیادی و با دید بلندمدت انجام شود.</p>
+        <div class="news-byline">نویسنده: گروه اقتصادی — زمان مطالعه ۴ دقیقه</div>
+      </div>
+      <div class="news-grid">
+        <div class="news-item reveal"><div class="img"><svg><use href="#ic-column"/></svg></div><span class="cat">سیاسی</span><h3>نشست مشترک وزرا برای بررسی بودجه سال آینده برگزار شد</h3><p>جزئیات بیشتر از تصمیمات اتخاذشده در این نشست...</p></div>
+        <div class="news-item reveal"><div class="img"><svg><use href="#ic-trophy"/></svg></div><span class="cat">ورزشی</span><h3>برد پرگل تیم ملی مقابل حریف سرسخت منطقه‌ای</h3><p>گزارش کامل از بازی دیشب و واکنش کادر فنی...</p></div>
+        <div class="news-item reveal"><div class="img"><svg><use href="#ic-flask"/></svg></div><span class="cat">علمی</span><h3>کشف روشی نوین برای بازیافت پسماند الکترونیکی</h3><p>پژوهشگران دانشگاه از یک فناوری جدید رونمایی کردند...</p></div>
+        <div class="news-item reveal"><div class="img"><svg><use href="#ic-film"/></svg></div><span class="cat">فرهنگی</span><h3>آغاز جشنواره فیلم کوتاه با حضور هنرمندان جوان</h3><p>برنامه کامل جشنواره و زمان‌بندی اکران‌ها...</p></div>
+      </div>
+    </div>
+    <aside class="news-sidebar reveal">
+      <h4>پربازدیدترین‌ها</h4>
+      <div class="news-side-item"><span class="n">۱</span><div><h5>افزایش نرخ بهره بانکی و تاثیر آن بر وام مسکن</h5><span>۲ ساعت پیش</span></div></div>
+      <div class="news-side-item"><span class="n">۲</span><div><h5>رونمایی از نسل جدید خودروهای برقی داخلی</h5><span>۴ ساعت پیش</span></div></div>
+      <div class="news-side-item"><span class="n">۳</span><div><h5>گزارش ویژه: چالش‌های اشتغال جوانان در سال جاری</h5><span>۶ ساعت پیش</span></div></div>
+      <div class="news-side-item"><span class="n">۴</span><div><h5>مصاحبه اختصاصی با کارآفرین برتر سال</h5><span>۸ ساعت پیش</span></div></div>
+      <div class="news-side-item"><span class="n">۵</span><div><h5>پیش‌بینی هواشناسی: بارش باران در روزهای آینده</h5><span>۱۰ ساعت پیش</span></div></div>
+    </aside>
+  </div>
+  <div class="news-footer">© روزنامه امروز — یک نمونه‌کار طراحی توسط علیرضا مبشری</div>
+</div>
+
+<div id="signupToast" role="status" aria-live="polite">
+  <button class="t-close" id="toastClose" aria-label="بستن">✕</button>
+  <div class="t-icon"><svg><use href="#ic-bell"/></svg></div>
+  <div class="t-body">
+    <h6 id="toastTitle"></h6>
+    <p id="toastText"></p>
+    <div class="t-actions">
+      <button class="t-primary" id="toastJoin">ثبت‌نام</button>
+      <button class="t-ghost" id="toastLater">بعداً</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- loader ----------
+window.addEventListener('load', ()=> document.getElementById('loader').classList.add('hide'));
+
+// ---------- mobile menu ----------
+const menuBtn = document.getElementById('menuBtn');
+const mobileNav = document.getElementById('mobileNav');
+menuBtn.addEventListener('click', ()=>{
+  const open = mobileNav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', open);
+});
+mobileNav.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>{ mobileNav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); }));
+
+// ---------- scroll reveal (home only) ----------
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); observer.unobserve(e.target); } });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ---------- hash router between home / shop / game / news ----------
+const pages = { home:'page-home', shop:'page-shop', game:'page-game', news:'page-news' };
+function route(){
+  let hash = (location.hash || '#home').replace('#','');
+  if(!pages[hash]) hash = 'home';
+  Object.values(pages).forEach(id=> document.getElementById(id).classList.remove('active'));
+  const activeEl = document.getElementById(pages[hash]);
+  activeEl.classList.add('active');
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+
+  // staggered entrance reveal for the page just shown
+  activeEl.querySelectorAll('.reveal').forEach(el=>el.classList.remove('show'));
+  requestAnimationFrame(()=>{
+    activeEl.querySelectorAll('.reveal').forEach((el,i)=>{
+      setTimeout(()=> el.classList.add('show'), 60*i);
+    });
+  });
+
+  toggleSignupToast(hash);
+}
+window.addEventListener('hashchange', route);
+
+// ---------- periodic signup toast (demo pages only) ----------
+const toastContent = {
+  shop:{title:'به باشگاه ولوره بپیوند', text:'با ثبت‌نام، ۱۰٪ تخفیف اولین خرید و دسترسی زودهنگام به تخفیف‌ها بگیر.'},
+  game:{title:'وارد اجتماع نتروویس شو', text:'ثبت‌نام کن و به تورنمنت‌های زنده و جوایز هفتگی دسترسی پیدا کن.'},
+  news:{title:'خبرنامه روزنامه امروز', text:'مهم‌ترین خبرهای روز رو هر صبح در ایمیلت دریافت کن.'}
+};
+let toastTimer = null;
+const toastEl = document.getElementById('signupToast');
+function showToast(theme){
+  const c = toastContent[theme];
+  if(!c) return;
+  toastEl.className='';
+  toastEl.classList.add('theme-'+theme);
+  document.getElementById('toastTitle').textContent = c.title;
+  document.getElementById('toastText').textContent = c.text;
+  requestAnimationFrame(()=> toastEl.classList.add('show'));
+  clearTimeout(toastEl._hideTimer);
+  toastEl._hideTimer = setTimeout(()=> toastEl.classList.remove('show'), 9000);
+}
+function toggleSignupToast(hash){
+  clearInterval(toastTimer);
+  toastEl.classList.remove('show');
+  if(hash === 'home') return;
+  toastTimer = setInterval(()=> showToast(hash), 16000);
+  setTimeout(()=> showToast(hash), 4000);
+}
+document.getElementById('toastClose').addEventListener('click', ()=> toastEl.classList.remove('show'));
+document.getElementById('toastLater').addEventListener('click', ()=> toastEl.classList.remove('show'));
+document.getElementById('toastJoin').addEventListener('click', ()=>{
+  toastEl.classList.remove('show');
+  document.getElementById('toastTitle').textContent = 'ثبت‌نام شد ✓';
+});
+
+route();
+
+// ---------- shop: add to cart micro-interaction ----------
+document.querySelectorAll('.shop-addcart').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    if(btn.classList.contains('added')) return;
+    const original = btn.textContent;
+    btn.textContent = 'اضافه شد ✓';
+    btn.classList.add('added');
+    setTimeout(()=>{ btn.textContent = original; btn.classList.remove('added'); }, 1800);
+  });
+});
+
+// ---------- ambient particles (home background only) ----------
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!prefersReducedMotion){
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText='position:fixed;inset:0;z-index:-1;pointer-events:none;';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  function resize(){canvas.width=innerWidth; canvas.height=innerHeight;}
+  resize(); window.addEventListener('resize', resize);
+  const particles = Array.from({length:32}, ()=>({x:Math.random()*innerWidth, y:Math.random()*innerHeight, r:Math.random()*1.8+0.6, s:Math.random()*0.6+0.2, c: Math.random()>0.5 ? '255,122,24' : '255,201,60'}));
+  let running = true;
+  document.addEventListener('visibilitychange', ()=>{ running = !document.hidden; if(running) loop(); });
+  function loop(){
+    if(!running) return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.y += p.s;
+      if(p.y > canvas.height){p.y=-5; p.x=Math.random()*canvas.width;}
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=`rgba(${p.c},0.35)`; ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+</script>
+</body>
+</html>
