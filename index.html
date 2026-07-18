@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="22 - وب‌سایت حرفه‌ای و مدرن">
+    <meta name="keywords" content="22, professional, modern, dashboard">
+    <meta name="author" content="22 Team">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <title>22 | داشبورد حرفه‌ای</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%238b1a1a'>22</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Feather Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+        /* Inline critical CSS for faster loading */
+        body { margin: 0; background: #0a0a0a; }
+        #loader { position: fixed; inset: 0; background: #0a0a0a; z-index: 10000; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+    <!-- Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Loader -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-text">22</div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Floating Notification -->
+    <div id="floating-notification" class="floating-notification"></div>
+
+    <!-- ============================================ -->
+    <!-- AUTHENTICATION PAGE -->
+    <!-- ============================================ -->
+    <div id="auth-page" class="auth-page">
+        <div class="auth-container">
+            <!-- Logo -->
+            <div class="auth-logo">
+                <span>22</span>
+                <p>داشبورد حرفه‌ای و مدرن</p>
+            </div>
+
+            <!-- Auth Card -->
+            <div class="auth-card">
+                <!-- Tabs -->
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="signin">ورود</button>
+                    <button class="auth-tab" data-tab="signup">ثبت‌نام</button>
+                    <button class="auth-tab" data-tab="admin">مدیر</button>
+                </div>
+
+                <!-- Sign In Form -->
+                <form id="signin-form" class="auth-form active">
+                    <div class="form-group">
+                        <label class="form-label">ایمیل</label>
+                        <input type="email" id="signin-email" class="form-input with-icon" placeholder="example@22.com" required>
+                        <span class="form-input-icon"><i data-feather="mail"></i></span>
+                        <div class="form-error">لطفاً ایمیل معتبر وارد کنید</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رمز عبور</label>
+                        <input type="password" id="signin-password" class="form-input with-icon" placeholder="••••••••" required>
+                        <span class="form-input-icon"><i data-feather="lock"></i></span>
+                        <span class="password-toggle"><i data-feather="eye"></i></span>
+                        <div class="form-error">رمز عبور را وارد کنید</div>
+                    </div>
+                    <div class="auth-submit">
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">
+                            <i data-feather="log-in"></i>
+                            ورود به سیستم
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Sign Up Form -->
+                <form id="signup-form" class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">نام کامل</label>
+                        <input type="text" id="signup-name" class="form-input with-icon" placeholder="نام و نام خانوادگی" required>
+                        <span class="form-input-icon"><i data-feather="user"></i></span>
+                        <div class="form-error">نام را وارد کنید</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ایمیل</label>
+                        <input type="email" id="signup-email" class="form-input with-icon" placeholder="example@22.com" required>
+                        <span class="form-input-icon"><i data-feather="mail"></i></span>
+                        <div class="form-error">ایمیل معتبر وارد کنید</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رمز عبور</label>
+                        <input type="password" id="signup-password" class="form-input with-icon" placeholder="حداقل ۶ کاراکتر" required>
+                        <span class="form-input-icon"><i data-feather="lock"></i></span>
+                        <span class="password-toggle"><i data-feather="eye"></i></span>
+                        <div class="form-error">رمز عبور باید حداقل ۶ کاراکتر باشد</div>
+                    </div>
+                    <div class="auth-submit">
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">
+                            <i data-feather="user-plus"></i>
+                            ثبت‌نام
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Admin Form -->
+                <form id="admin-form" class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">نام کاربری مدیر</label>
+                        <input type="text" id="admin-username" class="form-input with-icon" placeholder="admin" required>
+                        <span class="form-input-icon"><i data-feather="shield"></i></span>
+                        <div class="form-error">نام کاربری را وارد کنید</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رمز عبور</label>
+                        <input type="password" id="admin-password" class="form-input with-icon" placeholder="••••••••" required>
+                        <span class="form-input-icon"><i data-feather="lock"></i></span>
+                        <span class="password-toggle"><i data-feather="eye"></i></span>
+                        <div class="form-error">رمز عبور را وارد کنید</div>
+                    </div>
+                    <div class="auth-submit">
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">
+                            <i data-feather="log-in"></i>
+                            ورود مدیر
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Divider -->
+                <div class="auth-divider">یا</div>
+
+                <!-- Guest Login -->
+                <button id="guest-login" class="btn btn-secondary btn-block">
+                    <i data-feather="user"></i>
+                    ورود به عنوان مهمان
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MAIN APPLICATION LAYOUT -->
+    <!-- ============================================ -->
+    <div id="app-layout" class="app-layout hidden">
+
+        <!-- Sidebar Overlay (Mobile) -->
+        <div id="sidebar-overlay" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; display: none;"></div>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">22</div>
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-page="dashboard">
+                        <i data-feather="grid"></i>
+                        <span>داشبورد</span>
+                    </li>
+                    <li class="nav-item" data-page="users">
+                        <i data-feather="users"></i>
+                        <span>کاربران</span>
+                        <span class="nav-badge">5</span>
+                    </li>
+                    <li class="nav-item" data-page="content">
+                        <i data-feather="file-text"></i>
+                        <span>محتوا</span>
+                    </li>
+                    <li class="nav-item" data-page="notifications">
+                        <i data-feather="bell"></i>
+                        <span>اعلان‌ها</span>
+                        <span class="nav-badge">3</span>
+                    </li>
+                    <li class="nav-item" data-page="messages">
+                        <i data-feather="message-square"></i>
+                        <span>پیام‌ها</span>
+                    </li>
+                    <li class="nav-item admin-only" data-page="reports">
+                        <i data-feather="bar-chart-2"></i>
+                        <span>گزارش‌ها</span>
+                    </li>
+                    <li class="nav-item" data-page="profile">
+                        <i data-feather="user"></i>
+                        <span>پروفایل</span>
+                    </li>
+                    <li class="nav-item" data-page="settings">
+                        <i data-feather="settings"></i>
+                        <span>تنظیمات</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div id="sidebar-user" class="sidebar-user">
+                    <div class="user-avatar">U</div>
+                    <div class="user-info">
+                        <div class="user-name">کاربر</div>
+                        <div class="user-role">کاربر عادی</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-search">
+                    <input type="text" id="header-search" placeholder="جستجو...">
+                    <i data-feather="search"></i>
+                </div>
+
+                <div class="header-actions">
+                    <button id="mobile-menu-btn" class="header-btn" style="display: none;">
+                        <i data-feather="menu"></i>
+                    </button>
+                    <button id="theme-toggle" class="header-btn">
+                        <i data-feather="moon"></i>
+                    </button>
+                    <button id="notification-btn" class="header-btn">
+                        <i data-feather="bell"></i>
+                        <span class="header-btn-badge">5</span>
+                    </button>
+                    <button id="logout-btn" class="header-btn">
+                        <i data-feather="log-out"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ============================================ -->
+            <!-- DASHBOARD PAGE -->
+            <!-- ============================================ -->
+            <div id="page-dashboard" class="page-content active">
+                <div class="page-header">
+                    <h1 id="page-title" class="page-title">داشبورد</h1>
+                    <p id="page-subtitle" class="page-subtitle">نمای کلی سیستم</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div id="stats-grid" class="stats-grid">
+                    <!-- Skeleton loading -->
+                    <div class="card">
+                        <div class="skeleton skeleton-card"></div>
+                    </div>
+                    <div class="card">
+                        <div class="skeleton skeleton-card"></div>
+                    </div>
+                    <div class="card">
+                        <div class="skeleton skeleton-card"></div>
+                    </div>
+                    <div class="card">
+                        <div class="skeleton skeleton-card"></div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Chart -->
+                    <div class="card span-8" style="grid-column: span 8;">
+                        <div class="card-header">
+                            <div class="card-title">آمار بازدید</div>
+                            <div class="card-icon"><i data-feather="trending-up"></i></div>
+                        </div>
+                        <div id="chart-container" style="height: 200px;"></div>
+                    </div>
+
+                    <!-- Shortcuts -->
+                    <div class="card span-4" style="grid-column: span 4;">
+                        <div class="card-header">
+                            <div class="card-title">میانبرها</div>
+                            <div class="card-icon"><i data-feather="zap"></i></div>
+                        </div>
+                        <div id="shortcuts-grid" class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="skeleton skeleton-card" style="height: 80px;"></div>
+                            <div class="skeleton skeleton-card" style="height: 80px;"></div>
+                            <div class="skeleton skeleton-card" style="height: 80px;"></div>
+                            <div class="skeleton skeleton-card" style="height: 80px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card span-6" style="grid-column: span 6;">
+                        <div class="card-header">
+                            <div class="card-title">آخرین فعالیت‌ها</div>
+                            <div class="card-icon"><i data-feather="clock"></i></div>
+                        </div>
+                        <div id="activity-list" class="activity-list">
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Settings -->
+                    <div class="card span-6" style="grid-column: span 6;">
+                        <div class="card-header">
+                            <div class="card-title">تنظیمات سریع</div>
+                            <div class="card-icon"><i data-feather="sliders"></i></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">اعلان‌ها</div>
+                                <div class="settings-item-desc">دریافت اعلان‌های جدید</div>
+                            </div>
+                            <div class="toggle-switch active" data-setting="notifications"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">حالت تاریک</div>
+                                <div class="settings-item-desc">تم تاریک سایت</div>
+                            </div>
+                            <div class="toggle-switch active" data-toggle="theme" id="settings-theme-toggle"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">صدا</div>
+                                <div class="settings-item-desc">پخش موسیقی پس‌زمینه</div>
+                            </div>
+                            <div class="toggle-switch" data-setting="sound"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- USERS PAGE -->
+            <!-- ============================================ -->
+            <div id="page-users" class="page-content">
+                <div class="page-header">
+                    <h1 class="page-title">مدیریت کاربران</h1>
+                    <p class="page-subtitle">مدیریت کاربران سیستم</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">لیست کاربران</div>
+                        <button class="btn btn-primary btn-sm">
+                            <i data-feather="plus"></i>
+                            کاربر جدید
+                        </button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>کاربر</th>
+                                <th>ایمیل</th>
+                                <th>نقش</th>
+                                <th>وضعیت</th>
+                                <th>تاریخ عضویت</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 2rem;">
+                                    <div class="skeleton skeleton-text" style="width: 80%; margin: 0 auto;"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- CONTENT PAGE -->
+            <!-- ============================================ -->
+            <div id="page-content" class="page-content">
+                <div class="page-header">
+                    <h1 class="page-title">مدیریت محتوا</h1>
+                    <p class="page-subtitle">مدیریت محتوای سایت</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card span-4" style="grid-column: span 4;">
+                        <div class="card-header">
+                            <div class="card-icon"><i data-feather="file-plus"></i></div>
+                        </div>
+                        <div class="card-value">+</div>
+                        <div class="card-label">محتوای جدید</div>
+                    </div>
+                    <div class="card span-4" style="grid-column: span 4;">
+                        <div class="card-header">
+                            <div class="card-icon"><i data-feather="edit"></i></div>
+                        </div>
+                        <div class="card-value">12</div>
+                        <div class="card-label">در حال ویرایش</div>
+                    </div>
+                    <div class="card span-4" style="grid-column: span 4;">
+                        <div class="card-header">
+                            <div class="card-icon"><i data-feather="check-circle"></i></div>
+                        </div>
+                        <div class="card-value">48</div>
+                        <div class="card-label">منتشر شده</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- NOTIFICATIONS PAGE -->
+            <!-- ============================================ -->
+            <div id="page-notifications" class="page-content">
+                <div class="page-header">
+                    <h1 class="page-title">اعلان‌ها</h1>
+                    <p class="page-subtitle">مدیریت اعلان‌های سیستم</p>
+                </div>
+
+                <div class="card">
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: rgba(46, 204, 113, 0.1); color: var(--color-success);"><i data-feather="check"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-text"><strong>سیستم</strong> به‌روزرسانی جدید نصب شد</div>
+                                <div class="activity-time">10 دقیقه پیش</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: rgba(243, 156, 18, 0.1); color: var(--color-warning);"><i data-feather="alert-triangle"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-text"><strong>هشدار امنیتی</strong> تلاش ورود ناموفق شناسایی شد</div>
+                                <div class="activity-time">1 ساعت پیش</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: rgba(52, 152, 219, 0.1); color: #3498db;"><i data-feather="info"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-text"><strong>اطلاعیه</strong> نسخه جدید در دسترس است</div>
+                                <div class="activity-time">3 ساعت پیش</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- MESSAGES PAGE -->
+            <!-- ============================================ -->
+            <div id="page-messages" class="page-content">
+                <div class="page-header">
+                    <h1 class="page-title">پیام‌ها</h1>
+                    <p class="page-subtitle">صندوق پیام‌ها</p>
+                </div>
+
+                <div class="card">
+                    <div style="text-align: center; padding: 3rem; color: var(--color-text-muted);">
+                        <i data-feather="message-square" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <p>پیام جدیدی ندارید</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- REPORTS PAGE (Admin Only) -->
+            <!-- ============================================ -->
+            <div id="page-reports" class="page-content">
+                <div class="page-header">
+                    <h1 class="page-title">گزارش‌ها</h1>
+                    <p class="page-subtitle">گزارش‌های سیستمی</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card span-6" style="grid-column: span 6;">
+                        <div class="card-header">
+                            <div class="card-title">گزارش بازدید</div>
+                        </div>
+                        <div style="padding: 2rem; text-align: center; color: var(--color-text-muted);">
+                            <i data-feather="bar-chart" style="width: 64px; height: 64px; opacity: 0.3;"></i>
+                            <p style="margin-top: 1rem;">گزارش کامل بازدیدها</p>
+                        </div>
+                    </div>
+                    <div class="card span-6" style="grid-column: span 6;">
+                        <div class="card-header">
+                            <div class="card-title">گزارش فعالیت کاربران</div>
+                        </div>
+                        <div style="padding: 2rem; text-align: center; color: var(--color-text-muted);">
+                            <i data-feather="activity" style="width: 64px; height: 64px; opacity: 0.3;"></i>
+                            <p style="margin-top: 1rem;">گزارش فعالیت کاربران</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- PROFILE PAGE -->
+            <!-- ============================================ -->
+            <div id="page-profile" class="page-content">
+                <div class="page-header">
+                    <h1 class="page-title">پروفایل</h1>
+                    <p class="page-subtitle">مدیریت اطلاعات شخصی</p>
+                </div>
+
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div id="profile-avatar" class="profile-avatar-lg">U</div>
+                    <div class="profile-info">
+                        <div id="profile-name" class="profile-name">کاربر</div>
+                        <div id="profile-email" class="profile-email">user@22.com</div>
+                        <div id="profile-role" class="profile-role-badge">
+                            <i data-feather="shield" style="width: 12px; height: 12px;"></i>
+                            کاربر عادی
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Tabs -->
+                <div class="profile-tabs">
+                    <div class="profile-tab active" data-section="info">اطلاعات شخصی</div>
+                    <div class="profile-tab" data-section="security">امنیت</div>
+                    <div class="profile-tab" data-section="activity">تاریخچه</div>
+                </div>
+
+                <!-- Info Section -->
+                <div id="profile-section-info" class="profile-section active">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">ویرایش اطلاعات</div>
+                        </div>
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label class="form-label">نام کامل</label>
+                                <input type="text" id="edit-name" class="form-input" placeholder="نام و نام خانوادگی">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">ایمیل</label>
+                                <input type="email" id="edit-email" class="form-input" placeholder="example@22.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">شماره تماس</label>
+                                <input type="tel" id="edit-phone" class="form-input" placeholder="09*********">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">بیوگرافی</label>
+                                <textarea id="edit-bio" class="form-input" rows="3" placeholder="چند خط درباره خودتان..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="save"></i>
+                                ذخیره تغییرات
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div id="profile-section-security" class="profile-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">تغییر رمز عبور</div>
+                        </div>
+                        <form id="password-form">
+                            <div class="form-group">
+                                <label class="form-label">رمز عبور فعلی</label>
+                                <input type="password" id="current-password" class="form-input" placeholder="••••••••">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">رمز عبور جدید</label>
+                                <input type="password" id="new-password" class="form-input" placeholder="حداقل ۶ کاراکتر">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">تکرار رمز عبور جدید</label>
+                                <input type="password" id="confirm-password" class="form-input" placeholder="••••••••">
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="lock"></i>
+                                تغییر رمز عبور
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card" style="margin-top: 1.5rem;">
+                        <div class="card-header">
+                            <div class="card-title">امنیت حساب</div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">احراز هویت دو مرحله‌ای</div>
+                                <div class="settings-item-desc">افزایش امنیت حساب</div>
+                            </div>
+                            <div class="toggle-switch" data-setting="2fa"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">ورود از دستگاه‌های ناشناس</div>
+                                <div class="settings-item-desc">هشدار ورود از دستگاه جدید</div>
+                            </div>
+                            <div class="toggle-switch active" data-setting="device_alert"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Section -->
+                <div id="profile-section-activity" class="profile-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">تاریخچه فعالیت</div>
+                        </div>
+                        <div id="profile-activity-list" class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon"><i data-feather="log-in"></i></div>
+                                <div class="activity-content">
+                                    <div class="activity-text"><strong>ورود به سیستم</strong></div>
+                                    <div class="activity-time">امروز، 10:30</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon"><i data-feather="edit"></i></div>
+                                <div class="activity-content">
+                                    <div class="activity-text"><strong>ویرایش پروفایل</strong></div>
+                                    <div class="activity-time">دیروز، 15:45</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon"><i data-feather="key"></i></div>
+                                <div class="activity-content">
+                                    <div class="activity-text"><strong>تغییر رمز عبور</strong></div>
+                                    <div class="activity-time">3 روز پیش</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- SETTINGS PAGE -->
+            <!-- ============================================ -->
+            <div id="page-settings" class="page-content">
+                <div class="page-header">
+                    <h1 class="page-title">تنظیمات</h1>
+                    <p class="page-subtitle">تنظیمات سیستم</p>
+                </div>
+
+                <!-- Appearance -->
+                <div class="settings-group">
+                    <div class="settings-group-title">
+                        <i data-feather="monitor" style="width: 18px; height: 18px; vertical-align: middle; margin-left: 0.5rem;"></i>
+                        ظاهر
+                    </div>
+                    <div class="card">
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">حالت تاریک</div>
+                                <div class="settings-item-desc">تم تاریک/روشن سایت</div>
+                            </div>
+                            <div class="toggle-switch active" data-toggle="theme" id="settings-theme-toggle"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">زبان</div>
+                                <div class="settings-item-desc">زبان نمایش سایت</div>
+                            </div>
+                            <select id="language-select" class="form-input" style="width: auto; min-width: 150px;">
+                                <option value="fa">فارسی</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="settings-group">
+                    <div class="settings-group-title">
+                        <i data-feather="bell" style="width: 18px; height: 18px; vertical-align: middle; margin-left: 0.5rem;"></i>
+                        اعلان‌ها
+                    </div>
+                    <div class="card">
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">اعلان‌های ایمیل</div>
+                                <div class="settings-item-desc">دریافت اعلان از طریق ایمیل</div>
+                            </div>
+                            <div class="toggle-switch active" data-setting="email_notifications"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">اعلان‌های مرورگر</div>
+                                <div class="settings-item-desc">اعلان‌های دسکتاپ</div>
+                            </div>
+                            <div class="toggle-switch" data-setting="browser_notifications"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">اعلان‌های شناور</div>
+                                <div class="settings-item-desc">نمایش اعلان‌های شناور</div>
+                            </div>
+                            <div class="toggle-switch active" data-setting="floating_notifications"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account -->
+                <div class="settings-group">
+                    <div class="settings-group-title">
+                        <i data-feather="user" style="width: 18px; height: 18px; vertical-align: middle; margin-left: 0.5rem;"></i>
+                        حساب کاربری
+                    </div>
+                    <div class="card">
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <div class="settings-item-title">حذف حساب</div>
+                                <div class="settings-item-desc">حذف دائمی حساب کاربری</div>
+                            </div>
+                            <button class="btn btn-ghost" style="color: var(--color-error);">
+                                <i data-feather="trash-2"></i>
+                                حذف
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MUSIC PLAYER -->
+    <!-- ============================================ -->
+    <div id="music-player" class="music-player">
+        <div class="music-cover">
+            <i data-feather="music"></i>
+        </div>
+        <div class="music-info">
+            <div class="music-title">موسیقی پس‌زمینه</div>
+            <div class="music-artist">فایل صوتی اضافه نشده</div>
+            <div id="music-progress" class="music-progress">
+                <div id="music-progress-bar" class="music-progress-bar"></div>
+            </div>
+        </div>
+        <div class="music-controls">
+            <button id="music-prev" class="music-btn"><i data-feather="skip-back"></i></button>
+            <button id="music-play" class="music-btn play"><i data-feather="play"></i></button>
+            <button id="music-next" class="music-btn"><i data-feather="skip-forward"></i></button>
+        </div>
+        <div class="music-volume">
+            <button id="music-mute" class="music-btn"><i data-feather="volume-2"></i></button>
+            <input type="range" id="music-volume" min="0" max="100" value="50">
+        </div>
+        <button id="music-collapse" class="music-btn" style="margin-right: auto;">
+            <i data-feather="chevron-down"></i>
+        </button>
+    </div>
+
+    <!-- Audio Element (Hidden) -->
+    <audio id="bg-audio" loop>
+        <!-- Add your audio file here: <source src="assets/audio/background.mp3" type="audio/mpeg"> -->
+        <p>مرورگر شما از پخش صدا پشتیبانی نمی‌کند</p>
+    </audio>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>
